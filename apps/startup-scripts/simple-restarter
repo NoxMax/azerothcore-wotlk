@@ -41,12 +41,12 @@ do
     _exit_code=$?
 
     echo "exit code: $_exit_code"
-    # stop restarter on SIGKILL (disabled for now)
-    # 128 + 9 (SIGKILL)
-    #if [ $_exit_code -eq 137 ]; then
-    #	echo "$bin_file has been killed"
-    #    exit 0
-    #fi
+    
+    # Exit cleanly if shutdown was requested (exit code 0)
+    if [ $_exit_code -eq 0 ]; then
+        echo "$bin_file shutdown safely"
+        exit 0
+    fi
 
     echo "$bin_file terminated, restarting..."
 

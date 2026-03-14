@@ -105,13 +105,19 @@ void Battlefield::HandlePlayerEnterZone(Player* player, uint32 /*zone*/)
         // If full of players > announce to player that BF is full and kick him after a few second if he doesn't leave
         if (IsWarTime())
         {
-            if (HasWarVacancy(player->GetTeamId()))
-                InvitePlayerToWar(player);
-            else
+            // Playerbots: Bots accept entry invites in batches (once a real player is enrolled, or with auto-join on)
+            // and teleport in together. Without this guard, if a batch overflows the number of allowed players, all
+            // the bots in that batch get marked for a kick, even if some have a valid slot.
+            if (!IsPlayerInWarOrInvited(player))
             {
-                /// @todo: Send a packet to announce it to player
-                PlayersWillBeKick[player->GetTeamId()][player->GetGUID()] = GameTime::GetGameTime().count() + 10;
-                InvitePlayerToQueue(player);
+                if (HasWarVacancy(player->GetTeamId()))
+                    InvitePlayerToWar(player);
+                else
+                {
+                    /// @todo: Send a packet to announce it to player
+                    PlayersWillBeKick[player->GetTeamId()][player->GetGUID()] = GameTime::GetGameTime().count() + 10;
+                    InvitePlayerToQueue(player);
+                }
             }
         }
         else

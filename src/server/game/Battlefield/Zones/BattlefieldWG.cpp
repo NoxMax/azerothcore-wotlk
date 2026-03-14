@@ -990,6 +990,15 @@ uint32 BattlefieldWG::GetData(uint32 data) const
     return Battlefield::GetData(data);
 }
 
+// Playerbots: Used to inform bots which faction controls each workshop.
+TeamId BattlefieldWG::GetWorkshopTeam(uint8 workshopId) const
+{
+    for (Workshop::const_iterator itr = WorkshopsList.begin(); itr != WorkshopsList.end(); ++itr)
+        if ((*itr)->workshopId == workshopId)
+            return (*itr)->teamControl;
+    return TEAM_NEUTRAL;
+}
+
 void BattlefieldWG::FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& packet)
 {
     uint32 timer = GetTimer() / 1000;

@@ -324,6 +324,11 @@ public:
     void PlayerAcceptInviteToQueue(Player* player);
     void PlayerAcceptInviteToWar(Player* player);
     uint32 GetBattleId() const { return BattleId; }
+
+    // Playerbots: Returns the pending-kick map for the given team. Contains players who entered during
+    // wartime but could not get a slot. Used for kicking out bots if space is needed for real players.
+    PlayerTimerMap const& GetPlayersWillBeKick(TeamId team) const { return PlayersWillBeKick[team]; }
+
     void AskToLeaveQueue(Player* player);
     void PlayerAskToLeave(Player* player);
 

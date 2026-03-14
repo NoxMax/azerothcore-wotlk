@@ -252,6 +252,11 @@ class BattlefieldWG : public Battlefield
 {
 public:
     ~BattlefieldWG() override;
+
+    // Playerbots: Returns true if the player is currently enrolled in the active battle. Used to find out
+    // if a bot is participating in Wintergrasp, and potentially kick it if space is needed for real players.
+    bool IsPlayerInWar(Player* player) const { return PlayersInWar[player->GetTeamId()].count(player->GetGUID()) > 0; }
+
     /**
      * \brief Called when the battle start
      * - Spawn relic and turret
@@ -407,6 +412,9 @@ public:
 
     // True iff the most recent battle ended with the keep captured (attacker win).
     [[nodiscard]] bool IsLastBattleAttackerVictory() const { return LastBattleAttackerVictory; }
+
+    // Playerbots: Returns the team controlling a given workshop (TEAM_ALLIANCE, TEAM_HORDE, or TEAM_NEUTRAL)
+    TeamId GetWorkshopTeam(uint8 workshopId) const;
 
     bool IsKeepNpc(uint32 entry)
     {

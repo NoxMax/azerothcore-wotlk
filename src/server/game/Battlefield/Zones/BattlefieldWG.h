@@ -257,6 +257,9 @@ public:
     // if a bot is participating in Wintergrasp, and potentially kick it if space is needed for real players.
     bool IsPlayerInWar(Player* player) const { return PlayersInWar[player->GetTeamId()].count(player->GetGUID()) > 0; }
 
+    // Playerbots: Exposes the building list so bots can read their destruction state (m_State, m_WorldState)
+    GameObjectBuilding const& GetBuildingsInZone() const { return BuildingsInZone; }
+
     /**
      * \brief Called when the battle start
      * - Spawn relic and turret

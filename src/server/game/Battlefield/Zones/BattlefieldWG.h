@@ -253,8 +253,8 @@ class BattlefieldWG : public Battlefield
 public:
     ~BattlefieldWG() override;
 
-    // Playerbots: Exposes the building list so bots can read their destruction state (m_State, m_WorldState)
-    GameObjectBuilding const& GetBuildingsInZone() const { return BuildingsInZone; }
+    // Playerbots: Returns true if the building tracked by the given WorldState ID is in a destroyed state.
+    bool IsBuildingDestroyed(uint32 worldState) const;
 
     /**
      * \brief Called when the battle start

@@ -999,6 +999,18 @@ TeamId BattlefieldWG::GetWorkshopTeam(uint8 workshopId) const
     return TEAM_NEUTRAL;
 }
 
+// Playerbots: Used to inform bots whether a wall, gate, or tower has been destroyed.
+bool BattlefieldWG::IsBuildingDestroyed(uint32 worldState) const
+{
+    for (BfWGGameObjectBuilding const* building : BuildingsInZone)
+        if (building->m_WorldState == worldState)
+            return
+                building->m_State == BATTLEFIELD_WG_OBJECTSTATE_NEUTRAL_DESTROY  ||
+                building->m_State == BATTLEFIELD_WG_OBJECTSTATE_HORDE_DESTROY    ||
+                building->m_State == BATTLEFIELD_WG_OBJECTSTATE_ALLIANCE_DESTROY;
+    return false;
+}
+
 void BattlefieldWG::FillInitialWorldStates(WorldPackets::WorldState::InitWorldStates& packet)
 {
     uint32 timer = GetTimer() / 1000;
